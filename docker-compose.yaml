@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  serveur0:
+    image: docker.io/bitnami/cassandra:latest
+    ports:
+      - "9042:9042"
+    volumes:
+      - cassandra_data1:/bitnami
+    expose:
+      - "9042"
+    environment:
+      - CASSANDRA_CLUSTER_NAME=kmeans
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - CASSANDRA_DC="DC1"
+    restart: always
+
+  serveur1:
+    image: docker.io/bitnami/cassandra:latest
+    ports:
+      - "9043:9042"
+    volumes:
+      - cassandra_data2:/bitnami
+    expose:
+      - "9042"
+    environment:
+      - CASSANDRA_CLUSTER_NAME=kmeans
+      - CASSANDRA_SEEDS=serveur0
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - CASSANDRA_DC="DC1"
+    restart: always
+
+  serveur2:
+    image: docker.io/bitnami/cassandra:latest
+    ports:
+      - "9044:9042"
+    volumes:
+      - cassandra_data3:/bitnami
+    expose:
+      - "9042"
+    environment:
+      - CASSANDRA_CLUSTER_NAME=kmeans
+      - CASSANDRA_SEEDS=serveur0
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - CASSANDRA_DC="DC1"
+    restart: always
+
+volumes:
+  cassandra_data1:
+  cassandra_data2:
+  cassandra_data3: 
+    
